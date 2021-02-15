@@ -1,25 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext, useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
+import Routes from "./routes/Index";
 
+import Login from "./pages/Login";
+import PageError from "./pages/404";
+import { AnimatedSwitch, AnimatedRoute } from "react-router-transition";
+
+import { AdminContext } from "./context/AdminContext";
 function App() {
+  const { ctxUser } = useContext(AdminContext);
+  useEffect(() => {
+    console.log(ctxUser);
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <>
+      <>
+        <AnimatedSwitch
+          atEnter={{ opacity: 0 }}
+          atLeave={{ opacity: 0 }}
+          atActive={{ opacity: 1 }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <AnimatedRoute
+            atEnter={{ offset: -100 }}
+            atLeave={{ offset: -100 }}
+            atActive={{ offset: 0 }}
+            mapStyles={(styles) => ({
+              // transform: `translateX(${styles.offset}%)`,
+            })}
+            exact
+            path="/admin/login"
+          >
+            <Login />
+            {/* <Login /> */}
+          </AnimatedRoute>
+          <PrivateRoute path="/admin">
+            <Routes />
+          </PrivateRoute>
+
+          <AnimatedRoute
+            atEnter={{ offset: -100 }}
+            atLeave={{ offset: -100 }}
+            atActive={{ offset: 0 }}
+            mapStyles={(styles) => ({
+              transform: `translateX(${styles.offset}%)`,
+            })}
+            path="*"
+            component={PageError}
+          />
+        </AnimatedSwitch>
+      </>
+    </>
   );
 }
 
 export default App;
+function PrivateRoute({ children, ...rest }) {
+  const { ctxUser } = useContext(AdminContext);
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        ctxUser ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/admin/login",
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  );
+}
