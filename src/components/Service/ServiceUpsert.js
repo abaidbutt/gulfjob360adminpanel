@@ -20,6 +20,7 @@ export default function TipUpsert() {
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
+  const [errMsg, setErrMsg]=useState(null)
   const [category, setCategory] = useState();
   const [values, setValues] = useState({
     title: "",
@@ -82,6 +83,7 @@ export default function TipUpsert() {
         console.log(cateGory);
       })
       .catch((err) => {
+        
         console.log(err);
       });
   }, []);
@@ -96,14 +98,17 @@ export default function TipUpsert() {
       }
     })
       .then((res) => history.push("/admin/service"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err)
+        console.log(err)
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Service </Title>
+          <Title>{editId ? "Edit" : "Add"} Service </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -111,6 +116,12 @@ export default function TipUpsert() {
               name="title"
               variant="outlined"
               margin="dense"
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               fullWidth
               value={values.title}
               onChange={handleChange}
@@ -120,6 +131,9 @@ export default function TipUpsert() {
               })}
             />
             <FormHelperText error>{errors.title?.message}</FormHelperText>
+            {errMsg?.title.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               type="text"
               label="Service Description *"
@@ -176,6 +190,9 @@ export default function TipUpsert() {
               error={errors.slug ? true : false}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
+            {errMsg?.slug.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               label="status"
               select
@@ -205,41 +222,43 @@ export default function TipUpsert() {
 
             <FormHelperText error>{errors.status?.message}</FormHelperText>
 
-            {category && (
-              <TextField
-                label="Service Category"
-                select
-                margin="dense"
-                variant="outlined"
-                inputProps={{
-                  inputRef: (ref) => {
-                    if (!ref) return;
-                    register({
-                      name: "category_id",
-                      value: ref.value,
-                    });
-                  },
-                  onChange: (e) => {
-                    const { category_id } = values;
+            <TextField
+              label="Service Category"
+              select
+              margin="dense"
+              variant="outlined"
+              inputProps={{
+                inputRef: (ref) => {
+                  if (!ref) return;
+                  register({
+                    name: "category_id",
+                    value: ref.value,
+                  });
+                },
+                onChange: (e) => {
+                  const { category_id } = values;
 
-                    setValues({
-                      ...values,
-                      category_id: e.target.value,
-                    });
-                  },
-                }}
-                value={values.category_id}
-                fullWidth
-                error={errors.category_id ? true : false}
-              >
-                {/* <MenuItem></MenuItem> */}
-                {category.map((ctg, i) => (
+                  setValues({
+                    ...values,
+                    category_id: e.target.value,
+                  });
+                },
+              }}
+              // SelectProps={{
+              //   value: values.category_id,
+              // }}
+              value={values.category_id}
+              fullWidth
+              error={errors.category_id ? true : false}
+            >
+              <MenuItem value={values.category_id}></MenuItem>
+              {category &&
+                category.map((ctg, i) => (
                   <MenuItem value={ctg.id} key={i}>
                     {ctg.name}
                   </MenuItem>
                 ))}
-              </TextField>
-            )}
+            </TextField>
 
             <FormHelperText error>{errors.category_id?.message}</FormHelperText>
             <div className={classes.wrapper}>

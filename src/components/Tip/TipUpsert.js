@@ -17,6 +17,7 @@ import { AdminContext } from "../../context/AdminContext";
 export default function TipUpsert() {
   const classes = useStyles();
   const history = useHistory();
+  const [errMsg, setErrMsg]=useState(null)
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
@@ -91,19 +92,28 @@ export default function TipUpsert() {
       }
     })
       .then((res) => history.push("/admin/tip"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err)
+        console.log(err)
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Tips </Title>
+          <Title>{editId ? "Edit" : "Add"} Tips </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
               label="Tip Name *"
               name="heading"
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               margin="dense"
               variant="outlined"
               fullWidth
@@ -115,6 +125,9 @@ export default function TipUpsert() {
               })}
             />
             <FormHelperText error>{errors.heading?.message}</FormHelperText>
+            {errMsg?.heading.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               type="text"
               label="Tip Description *"

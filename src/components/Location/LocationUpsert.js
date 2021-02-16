@@ -17,6 +17,8 @@ export default function AdsUpsert() {
   const classes = useStyles();
   const history = useHistory();
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
+  const [errMsg, setErrMsg] = useState(null);
+
   const [values, setValues] = useState({
     location_name: "",
     slug: "",
@@ -72,14 +74,17 @@ export default function AdsUpsert() {
       }
     })
       .then((res) => history.push("/admin/location"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setErrMsg(err);
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Location </Title>
+          <Title>{editId ? "Edit" : "Add"} Location </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -88,6 +93,12 @@ export default function AdsUpsert() {
               variant="outlined"
               margin="dense"
               fullWidth
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               value={values.location_name}
               onChange={handleChange}
               error={errors.location_name ? true : false}
@@ -98,6 +109,9 @@ export default function AdsUpsert() {
             <FormHelperText error>
               {errors.location_name?.message}
             </FormHelperText>
+            {errMsg?.location_name.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
 
             <TextField
               name="code"
@@ -114,6 +128,9 @@ export default function AdsUpsert() {
               error={errors.code ? true : false}
             />
             <FormHelperText error>{errors.code?.message}</FormHelperText>
+            {errMsg?.code.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               name="slug"
               label="Location Slug *"
@@ -137,7 +154,9 @@ export default function AdsUpsert() {
               error={errors.slug ? true : false}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-
+            {errMsg?.slug.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <div className={classes.wrapper}>
               <Button
                 type="submit"

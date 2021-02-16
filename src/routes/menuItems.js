@@ -43,7 +43,7 @@ export const menuItems = [
         icon: <FindInPage />,
       },
       {
-        name: "Create",
+        name: "Add Ads",
         icon: <AddBox />,
         url: "/admin/ads/create",
         select: 4,
@@ -66,7 +66,7 @@ export const menuItems = [
         select: 5,
       },
       {
-        name: "Create Education",
+        name: "Add Education",
         url: "/admin/education/create",
         icon: <AddBox />,
         select: 6,
@@ -84,7 +84,7 @@ export const menuItems = [
         select: 7,
       },
       {
-        name: "Create Location",
+        name: "Add Location",
         url: "/admin/location/create",
         icon: <AddBox />,
         select: 8,
@@ -102,7 +102,7 @@ export const menuItems = [
         select: 9,
       },
       {
-        name: "Create Job",
+        name: "Add Job",
         url: "/admin/job/create",
         icon: <AddBox />,
         select: 10,
@@ -120,7 +120,7 @@ export const menuItems = [
         select: 11,
       },
       {
-        name: "Create Tip",
+        name: "Add Tip",
         url: "/admin/tip/create",
         icon: <AddBox />,
         select: 12,
@@ -138,7 +138,7 @@ export const menuItems = [
         select: 13,
       },
       {
-        name: "Create Faq",
+        name: "Add Faq",
         url: "/admin/faq/create",
         icon: <AddBox />,
         select: 14,
@@ -156,7 +156,7 @@ export const menuItems = [
         select: 15,
       },
       {
-        name: "Create Service",
+        name: "Add Service",
         url: "/admin/service/create",
         icon: <AddBox />,
         select: 16,
@@ -174,7 +174,7 @@ export const menuItems = [
         select: 17,
       },
       {
-        name: "Create Industry",
+        name: "Add Industry",
         url: "/admin/industry/create",
         icon: <AddBox />,
         select: 18,
@@ -192,7 +192,7 @@ export const menuItems = [
         select: 19,
       },
       {
-        name: "Create Partner",
+        name: "Add Partner",
         url: "/admin/partner/create",
         icon: <AddBox />,
         select: 20,
@@ -210,7 +210,7 @@ export const menuItems = [
         select: 21,
       },
       {
-        name: "Create Categorie",
+        name: "Add Categorie",
         url: "/admin/category/create",
         icon: <PostAdd />,
         select: 22,

@@ -18,6 +18,7 @@ export default function AdsUpsert() {
   const [fileOpen, setFileOpen] = useState(false);
   const classes = useStyles();
   const history = useHistory();
+  const [errMsg, setErrMsg] = useState(null);
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
   const [values, setValues] = useState({
     name: "",
@@ -92,7 +93,7 @@ export default function AdsUpsert() {
   // };
   const EditSubmit = async (data) => {
     // console.log(data.image[0].name);
-    values.image=data.image[0].name
+    values.image = data.image[0].name;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/partners/${editId}`, values, rsl, rej);
@@ -101,7 +102,10 @@ export default function AdsUpsert() {
       }
     })
       .then((res) => history.push("/admin/partner"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err);
+        console.log(err);
+      });
   };
 
   return (
@@ -129,6 +133,9 @@ export default function AdsUpsert() {
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
+            {errMsg?.name.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               name="description"
               label="description *"

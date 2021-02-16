@@ -17,6 +17,7 @@ import { AdminContext } from "../../context/AdminContext";
 export default function TipUpsert() {
   const classes = useStyles();
   const history = useHistory();
+  const [errMsg, setErrMsg]=useState(null)
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
@@ -92,7 +93,10 @@ export default function TipUpsert() {
       }
     })
       .then((res) => history.push("/admin/faq"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err)
+        console.log(err)
+      });
   };
 
   return (
@@ -108,6 +112,12 @@ export default function TipUpsert() {
               name="heading"
               variant="outlined"
               fullWidth
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               value={values.heading}
               onChange={handleChange}
               error={errors.heading ? true : false}
@@ -116,6 +126,9 @@ export default function TipUpsert() {
               })}
             />
             <FormHelperText error>{errors.heading?.message}</FormHelperText>
+            {errMsg?.heading.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               margin="dense"
               type="text"
@@ -157,7 +170,9 @@ export default function TipUpsert() {
               error={errors.slug ? true : false}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-
+            {errMsg?.slug.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             
               <TextField
                 label="Faq Category"

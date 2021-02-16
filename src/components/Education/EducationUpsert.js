@@ -16,6 +16,8 @@ import { AdminContext } from "../../context/AdminContext";
 export default function AdsUpsert() {
   const classes = useStyles();
   const history = useHistory();
+  const [errMsg, setErrMsg] = useState(null);
+
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
   const [values, setValues] = useState({
     name: "",
@@ -62,7 +64,7 @@ export default function AdsUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
-    console.log(values)
+    console.log(values);
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/educations/${editId}`, values, rsl, rej);
@@ -71,14 +73,16 @@ export default function AdsUpsert() {
       }
     })
       .then((res) => history.push("/admin/education"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err);
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Education </Title>
+          <Title>{editId ? "Edit" : "Add"} Education </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -89,13 +93,21 @@ export default function AdsUpsert() {
               fullWidth
               value={values.name}
               onChange={handleChange}
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               error={errors.name ? true : false}
               inputRef={register({
                 required: "This is Required",
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
-
+            {errMsg?.name.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               margin="dense"
               name="slug"

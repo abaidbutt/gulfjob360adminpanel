@@ -9,10 +9,7 @@ import { AnimatedSwitch, AnimatedRoute } from "react-router-transition";
 import { AdminContext } from "./context/AdminContext";
 function App() {
   const { ctxUser } = useContext(AdminContext);
-  // const { user, token } = JSON.parse(ctxUser);
-  useEffect(() => {
-    console.log(ctxUser);
-  });
+
   return (
     <>
       <>
@@ -31,7 +28,7 @@ function App() {
             exact
             path={["/", "/admin/login"]}
           >
-            <Login />
+            {ctxUser ? <Redirect to="/admin" /> : <Login />}
           </AnimatedRoute>
           <PrivateRoute path="/admin">
             <Routes />

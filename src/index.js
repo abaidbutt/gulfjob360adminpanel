@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 import reportWebVitals from "./reportWebVitals";
@@ -12,10 +13,14 @@ import { CssBaseline } from "@material-ui/core";
 import AdminProvider from "./context/AdminContext";
 import { theme } from "./theme";
 import { ThemeProvider } from "@material-ui/core/styles";
+import { ToastContainer } from 'react-toastify';
+
 function Main() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer />
+
       <App />
     </ThemeProvider>
   );

@@ -6,6 +6,7 @@ import {
   Container,
   FormHelperText,
   MenuItem,
+  Typography,
 } from "@material-ui/core";
 import { BaseUrl } from "../../config";
 // import CircularProgress from "@material-ui/core/CircularProgress";
@@ -22,9 +23,10 @@ import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
 export default function AdsUpsert() {
   const classes = useStyles();
-  const [editorState, setEditorState] = React.useState(() =>
+  const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  const [errMsg, setErrMsg] = useState(null);
 
   const history = useHistory();
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
@@ -73,7 +75,9 @@ export default function AdsUpsert() {
         });
     }
   }, []);
-
+  useEffect(() => {
+    console.log(errMsg);
+  });
   const EditSubmit = async (data) => {
     new Promise((rsl, rej) => {
       if (editId) {
@@ -83,7 +87,10 @@ export default function AdsUpsert() {
       }
     })
       .then((res) => history.push("/admin/ads"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setErrMsg(err);
+      });
   };
   const save = (data) => {
     console.log(data);
@@ -95,7 +102,8 @@ export default function AdsUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Advertisement </Title>
+          <Title>{editId ? "Edit" : "Add"} Advertisement </Title>
+
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -112,7 +120,7 @@ export default function AdsUpsert() {
               })}
             />
             <FormHelperText error>{errors.location?.message}</FormHelperText>
-            
+
             {/* <MuiThemeProvider theme={defaultTheme}>
               <MUIRichTextEditor
                 label="content"
@@ -141,7 +149,9 @@ export default function AdsUpsert() {
               error={errors.content ? true : false}
             />
             <FormHelperText error>{errors.content?.message}</FormHelperText>
-
+            {errMsg?.content.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               label="Status"
               select
@@ -177,7 +187,7 @@ export default function AdsUpsert() {
                 color="secondary"
                 className={classes.submit}
               >
-                Save Advertisement
+                Save
               </Button>
             </div>
           </form>

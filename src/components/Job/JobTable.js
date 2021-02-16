@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
 import Moment from "react-moment";
-import { MoreVert, Edit } from "@material-ui/icons";
+import { MoreVert, Edit, Pageview } from "@material-ui/icons";
 import JobDel from "./JobDel";
 
 import { Link } from "react-router-dom";
@@ -62,6 +62,13 @@ function SimpleListMenu({ rowId }) {
           <Link to={`/admin/job/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
+            </Button>
+          </Link>
+        </MenuItem>
+        <MenuItem>
+          <Link to={`/admin/job/view/${rowId}`}>
+            <Button color="primary" fullWidth>
+              <Pageview />
             </Button>
           </Link>
         </MenuItem>

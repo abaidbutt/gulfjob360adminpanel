@@ -107,6 +107,12 @@ export default function PackageUpsert() {
               label="Tip Name *"
               name="heading"
               margin="dense"
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               variant="outlined"
               fullWidth
               value={values.heading}

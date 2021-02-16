@@ -2,15 +2,18 @@ import { useEffect } from "react";
 import { createContext, useReducer } from "react";
 import adminReducer, { initState } from "./AdminReducer";
 import Axios from "axios";
+import { toast } from "react-toastify";
 
 export const AdminContext = createContext();
 
 const AdminProvider = ({ children }) => {
   const [state, dispatch] = useReducer(adminReducer, initState);
+
   useEffect(() => {
-    return () => {
-      dispatch({ type: "ERROR", payload: "" });
-    };
+    console.log(state.error);
+    if (state.error) {
+      toast("Please Provide Correct Credentials");
+    }
   }, [state?.error]);
   // useEffect(() => {
   //   console.log(state);
@@ -52,6 +55,7 @@ const AdminProvider = ({ children }) => {
       const res = response.data;
       if (response.status === 202) {
         dispatch({ type: "DELETE", payload: delId });
+        toast("Delete Successfully");
       }
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.response });
@@ -60,15 +64,20 @@ const AdminProvider = ({ children }) => {
   };
   const handleEdit = async (routeName, values, rsl, rej) => {
     try {
-      console.log(values);
       const response = await Axios.put(routeName, values);
       const res = response.data;
-      dispatch({ type: "UPDATE", payload: res });
+
+      if (res.success === 1) {
+        dispatch({ type: "UPDATE", payload: res });
+        toast("Update Successfully");
+      }
 
       rsl();
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.response });
-      rej();
+      const { error } = err.response.data;
+      dispatch({ type: "ERROR", payload: error });
+      rej(error);
     }
     dispatch({ type: "LOADING", payload: false });
   };
@@ -77,12 +86,15 @@ const AdminProvider = ({ children }) => {
       const response = await Axios.post(routeName, values);
       const res = response.data;
 
-      dispatch({ type: "CREATE", payload: res });
+      if (response.status === 201) {
+        dispatch({ type: "CREATE", payload: res });
+        toast("Create Successfully");
+      }
       rsl();
     } catch (err) {
-      dispatch({ type: "ERROR", payload: err.response.data.error });
-
-      rej();
+      const { error } = err.response.data;
+      dispatch({ type: "ERROR", payload: error });
+      rej(error);
     }
     dispatch({ type: "LOADING", payload: false });
   };
@@ -117,7 +129,10 @@ const AdminProvider = ({ children }) => {
     try {
       const response = await Axios.post(routeName, credentials);
       const res = response.data;
-      dispatch({ type: "LOGIN", payload: res.success });
+      if (response.status === 202) {
+        dispatch({ type: "LOGIN", payload: res.success });
+        toast("Login Successfully");
+      }
       rsl(res.success.token);
     } catch (err) {
       // dispatch({ type: "ERROR", payload: err.response });
@@ -126,6 +141,7 @@ const AdminProvider = ({ children }) => {
   }
   async function logoutUser(routeName, credentials, rsl, rej) {
     dispatch({ type: "LOGOUT" });
+    toast("Logout Successfully");
   }
   // useEffect(() => {
   //

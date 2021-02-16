@@ -37,6 +37,7 @@ const categories = [
   },
 ];
 function CategoryUpsert() {
+  const [errMsg, setErrMsg] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
@@ -64,6 +65,9 @@ function CategoryUpsert() {
     criteriaMode: "firstError",
     shouldFocusError: true,
     shouldUnregister: true,
+  });
+  useEffect(() => {
+    console.log(errors);
   });
   useEffect(() => {
     if (editId) {
@@ -95,14 +99,17 @@ function CategoryUpsert() {
       }
     })
       .then((res) => history.push("/admin/category"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err);
+        console.log(err);
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-        <Title>{editId?'Edit':'Add'} Category </Title>
+          <Title>{editId ? "Edit" : "Add"} Category </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -125,7 +132,9 @@ function CategoryUpsert() {
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
-
+            {errMsg?.name.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               name="slug"
               label="Category Slug *"
@@ -147,26 +156,14 @@ function CategoryUpsert() {
                 required: "This is Required",
               })}
               error={errors.slug ? true : false}
+              FormHelperTextProps={errors.type?.message}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-            {/* <TextField
-              margin="dense"
-              name="type"
-              label="Category *"
-              variant="outlined"
-              value={values.type}
-              onChange={handleChange}
-              type="text"
-              fullWidth
-              inputRef={register({
-                required: "This is Required",
-              })}
-              error={errors.type ? true : false}
-            />
-            <FormHelperText error>{errors.type?.message}</FormHelperText> */}
-
+            {errMsg?.slug.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
-              label="Category"
+              label="Category Type *"
               margin="dense"
               select
               variant="outlined"
@@ -176,6 +173,7 @@ function CategoryUpsert() {
                   register({
                     name: "type",
                     value: ref.value,
+                    required: "This is Required",
                   });
                 },
                 onChange: (e) => {
@@ -187,17 +185,17 @@ function CategoryUpsert() {
                   });
                 },
               }}
+              error={errors.type ? true : false}
               value={values.type}
               fullWidth
-              error={errors.type ? true : false}
             >
-              {/* <MenuItem></MenuItem> */}
               {categories.map((ctg, i) => (
                 <MenuItem value={ctg.value} key={i}>
                   {ctg.name}
                 </MenuItem>
               ))}
             </TextField>
+            <FormHelperText error>{errors.type?.message}</FormHelperText>
 
             <div className={classes.wrapper}>
               <Button

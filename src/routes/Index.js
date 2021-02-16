@@ -30,7 +30,7 @@ import LocationUpsert from "../components/Location/LocationUpsert";
 import JobUpsert from "../components/Job/JobUpsert";
 import ServiceUpsert from "../components/Service/ServiceUpsert";
 import PartnerUpsert from "../components/Partner/PartnerUpsert";
-
+import JobView from '../components/Job/JobView'
 const Index = (props) => {
   return (
     <>
@@ -99,6 +99,7 @@ const Index = (props) => {
           <Route exact path="/admin/job" component={Job} />
           <Route exact path="/admin/job/create" component={JobUpsert} />
           <Route exact path="/admin/job/edit/:editId" component={JobUpsert} />
+          <Route exact path="/admin/job/view/:viewId" component={JobView} />
           <Route exact path="/admin/service" component={Service} />
           <Route exact path="/admin/service/create" component={ServiceUpsert} />
           <Route

@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
 export default function AdsUpsert() {
+  const [errMsg, setErrMsg] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
@@ -70,14 +71,17 @@ export default function AdsUpsert() {
       }
     })
       .then((res) => history.push("/admin/industry"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err);
+        console.log(err);
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Industry </Title>
+          <Title>{editId ? "Edit" : "Add"} Industry </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -85,6 +89,12 @@ export default function AdsUpsert() {
               name="name"
               variant="outlined"
               margin="dense"
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               fullWidth
               value={values.name}
               onChange={handleChange}
@@ -94,7 +104,9 @@ export default function AdsUpsert() {
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
-
+            {errMsg?.name.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <TextField
               name="slug"
               label="Industry Slug *"
@@ -118,7 +130,9 @@ export default function AdsUpsert() {
               error={errors.slug ? true : false}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-
+            {errMsg?.slug.map((err) => (
+              <FormHelperText error> {err}</FormHelperText>
+            ))}
             <div className={classes.wrapper}>
               <Button
                 type="submit"

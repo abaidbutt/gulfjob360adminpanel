@@ -48,7 +48,8 @@ export default function JobUpsert() {
   const [location, setLocation] = useState([]);
   const [industry, setIndustry] = useState([]);
   const [educations, setEducations] = useState([]);
-
+  const [employeries, setEmployers] = useState([]);
+  const [errMsg, setErrMsg] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   const {
@@ -58,7 +59,7 @@ export default function JobUpsert() {
     handleCategory,
     handleFetch,
   } = useContext(AdminContext);
-  const [category, setCategory] = useState();
+  const [categories, setCategories] = useState();
   const [values, setValues] = useState({
     title: "",
     description: "",
@@ -72,8 +73,8 @@ export default function JobUpsert() {
     industry_type: "",
     functional_area: "",
     gender: "",
-    experience_from: "",
-    experience_to: "",
+    experince_from: "",
+    experince_to: "",
     nationality: "",
     current_location: "",
     education: "",
@@ -123,6 +124,13 @@ export default function JobUpsert() {
         setEducations(res);
       })
       .catch((err) => console.log(err));
+    new Promise((rsl, rej) => {
+      handleFetch(`${BaseUrl}/employers`, rsl, rej);
+    })
+      .then((res) => {
+        setEmployers(res);
+      })
+      .catch((err) => console.log(err));
   }
 
   useEffect(() => {
@@ -146,8 +154,8 @@ export default function JobUpsert() {
             industry_type,
             functional_area,
             gender,
-            experience_from,
-            experience_to,
+            experince_from,
+            experince_to,
             nationality,
             current_location,
             education,
@@ -167,8 +175,8 @@ export default function JobUpsert() {
             industry_type,
             functional_area,
             gender,
-            experience_from,
-            experience_to,
+            experince_from,
+            experince_to,
             nationality,
             current_location,
             education,
@@ -187,8 +195,8 @@ export default function JobUpsert() {
       handleCategory(`${BaseUrl}/categories`, "jobs", rsl, rej);
     })
       .then((res) => {
-        const cateGory = res.filter((resCat) => resCat.type === "tips");
-        setCategory(cateGory);
+        const cateGory = res.filter((resCat) => resCat.type === "jobs");
+        setCategories(cateGory);
         console.log(cateGory);
       })
       .catch((err) => {
@@ -205,14 +213,17 @@ export default function JobUpsert() {
       }
     })
       .then((res) => history.push("/admin/job"))
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setErrMsg(err);
+        console.log(err);
+      });
   };
 
   return (
     <>
       <Container component="main" maxWidth="md">
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} Job </Title>
+          <Title>{editId ? "Edit" : "Add"} Job </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -229,6 +240,9 @@ export default function JobUpsert() {
                   error={errors.title ? true : false}
                 />
                 <FormHelperText error>{errors.title?.message}</FormHelperText>
+                {errMsg?.title.map((err) => (
+                  <FormHelperText error> {err}</FormHelperText>
+                ))}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -275,6 +289,7 @@ export default function JobUpsert() {
                       }}
                       value={values.currency}
                       fullWidth
+                      inputRef={register}
                       error={errors.currency ? true : false}
                     >
                       {currencies.map((ctg, i) => (
@@ -452,25 +467,38 @@ export default function JobUpsert() {
 
                 <FormHelperText error>{errors.gender?.message}</FormHelperText>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   color="secondary"
-                  name="experience_from"
-                  label="Experience From "
+                  name="current_location"
+                  label="Current Location "
                   onChange={handleChange}
                   fullWidth
-                  value={values.experience_from}
+                  value={values.current_location}
                   variant="outlined"
+                  inputRef={register}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   color="secondary"
-                  name="experience_to"
+                  name="experince_from"
+                  label="Experience From "
+                  onChange={handleChange}
+                  fullWidth
+                  value={values.experince_from}
+                  variant="outlined"
+                  inputRef={register}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  color="secondary"
+                  name="experince_to"
                   label="Experience To"
                   onChange={handleChange}
                   fullWidth
-                  value={values.experience_to}
+                  value={values.experince_to}
                   variant="outlined"
                   inputRef={register}
                 />
@@ -537,18 +565,75 @@ export default function JobUpsert() {
                   inputRef={register}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
-                  // FormHelperText={errors.company_id?.message}
-                  color="secondary"
-                  name="company_id"
-                  label="Company *"
-                  inputRef={register({ required: "This is Required" })}
-                  fullWidth
+                  label="company_id"
+                  select
                   variant="outlined"
-                  onChange={handleChange}
+                  inputProps={{
+                    inputRef: (ref) => {
+                      if (!ref) return;
+                      register({
+                        name: "company_id",
+                        value: ref.value,
+                      });
+                    },
+                    onChange: (e) => {
+                      const { company_id } = values;
+
+                      setValues({ ...values, company_id: e.target.value });
+                    },
+                  }}
                   value={values.company_id}
-                />
+                  fullWidth
+                  error={errors.company_id ? true : false}
+                >
+                  {employeries &&
+                    employeries.map((emp, i) => (
+                      <MenuItem value={emp.id} key={i}>
+                        {emp.first_name}
+                      </MenuItem>
+                    ))}
+                </TextField>
+
+                <FormHelperText error>
+                  {errors.company_id?.message}
+                </FormHelperText>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="category_id"
+                  select
+                  variant="outlined"
+                  inputProps={{
+                    inputRef: (ref) => {
+                      if (!ref) return;
+                      register({
+                        name: "category_id",
+                        value: ref.value,
+                      });
+                    },
+                    onChange: (e) => {
+                      const { category_id } = values;
+
+                      setValues({ ...values, category_id: e.target.value });
+                    },
+                  }}
+                  value={values.category_id}
+                  fullWidth
+                  error={errors.category_id ? true : false}
+                >
+                  {categories &&
+                    categories.map((cat, i) => (
+                      <MenuItem value={cat.id} key={i}>
+                        {cat.name}
+                      </MenuItem>
+                    ))}
+                </TextField>
+
+                <FormHelperText error>
+                  {errors.category_id?.message}
+                </FormHelperText>
               </Grid>
             </Grid>
             <div className={classes.wrapper}>
