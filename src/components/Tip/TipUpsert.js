@@ -98,7 +98,7 @@ export default function TipUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} Tips </Title>
+          <Title>{editId?'Edit':'Add'} Tips </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"

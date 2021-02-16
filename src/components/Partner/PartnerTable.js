@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
+import {
+  TableCell,
+  TableRow,
+  Button,
+  Menu,
+  MenuItem,
+  Avatar,
+} from "@material-ui/core";
 import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import PartnerDel from "./PartnerDel";
@@ -9,10 +16,19 @@ const PartnerTable = ({ row, index, crtPage }) => {
   return (
     <TableRow key={row.id}>
       <TableCell component="th" scope="row">
-        {index + 1 + (crtPage > 1 ? crtPage * 5 - 5 : 0)}
+        {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.name}</TableCell>
-      <TableCell>{row.image}</TableCell>
+      <TableCell>
+        {/* <Avatar
+          src={`http://gulfjob.nwsols.com/public${row.image}`}
+          alt={row.name}
+        /> */}
+        <Avatar
+          alt="Remy Sharp"
+          src={`http://gulfjobs.nwsols.com/public${row.image}`}
+        />
+      </TableCell>
 
       <TableCell align="center">
         <Moment

@@ -99,7 +99,7 @@ export default function TipUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} FAQ </Title>
+          <Title>{editId?'Edit':'Add'} FAQ </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -158,7 +158,7 @@ export default function TipUpsert() {
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
 
-            {category && (
+            
               <TextField
                 label="Faq Category"
                 margin="dense"
@@ -186,13 +186,13 @@ export default function TipUpsert() {
                 error={errors.category_id ? true : false}
               >
                 {/* <MenuItem></MenuItem> */}
-                {category.map((ctg, i) => (
+                {category && category.map((ctg, i) => (
                   <MenuItem value={ctg.id} key={i}>
                     {ctg.name}
                   </MenuItem>
                 ))}
               </TextField>
-            )}
+          
             <div className={classes.wrapper}>
               <Button
                 type="submit"

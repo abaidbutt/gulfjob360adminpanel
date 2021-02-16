@@ -5,6 +5,7 @@ import {
   TextField,
   Container,
   FormHelperText,
+  MenuItem,
 } from "@material-ui/core";
 import { BaseUrl } from "../../config";
 // import CircularProgress from "@material-ui/core/CircularProgress";
@@ -13,6 +14,28 @@ import { useForm } from "react-hook-form";
 
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
+const categories = [
+  {
+    name: "FAQ",
+    value: "faqs",
+  },
+  {
+    name: "JOB",
+    value: "jobs",
+  },
+  {
+    name: "SERVICE",
+    value: "services",
+  },
+  {
+    name: "PACKAGE",
+    value: "packages",
+  },
+  {
+    name: "TIP",
+    value: "tips",
+  },
+];
 function CategoryUpsert() {
   const classes = useStyles();
   const history = useHistory();
@@ -79,7 +102,7 @@ function CategoryUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} Category </Title>
+        <Title>{editId?'Edit':'Add'} Category </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -88,6 +111,12 @@ function CategoryUpsert() {
               name="name"
               variant="outlined"
               fullWidth
+              onKeyUp={(ev) => {
+                setValues({
+                  ...values,
+                  slug: ev.target.value.replace(/\s+/g, "_"),
+                });
+              }}
               value={values.name}
               onChange={handleChange}
               error={errors.name ? true : false}
@@ -120,7 +149,7 @@ function CategoryUpsert() {
               error={errors.slug ? true : false}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-            <TextField
+            {/* <TextField
               margin="dense"
               name="type"
               label="Category *"
@@ -134,7 +163,41 @@ function CategoryUpsert() {
               })}
               error={errors.type ? true : false}
             />
-            <FormHelperText error>{errors.type?.message}</FormHelperText>
+            <FormHelperText error>{errors.type?.message}</FormHelperText> */}
+
+            <TextField
+              label="Category"
+              margin="dense"
+              select
+              variant="outlined"
+              inputProps={{
+                inputRef: (ref) => {
+                  if (!ref) return;
+                  register({
+                    name: "type",
+                    value: ref.value,
+                  });
+                },
+                onChange: (e) => {
+                  const { type } = values;
+
+                  setValues({
+                    ...values,
+                    type: e.target.value,
+                  });
+                },
+              }}
+              value={values.type}
+              fullWidth
+              error={errors.type ? true : false}
+            >
+              {/* <MenuItem></MenuItem> */}
+              {categories.map((ctg, i) => (
+                <MenuItem value={ctg.value} key={i}>
+                  {ctg.name}
+                </MenuItem>
+              ))}
+            </TextField>
 
             <div className={classes.wrapper}>
               <Button

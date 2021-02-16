@@ -1,5 +1,5 @@
 export const initState = {
-  user: localStorage.getItem("credentials") || null,
+  user: JSON.parse(localStorage.getItem("credentials")) || null,
   results: [],
   loading: true,
   error: "",
@@ -10,7 +10,7 @@ export default (state, { type, payload }) => {
   switch (type) {
     case "LOGIN":
       const { token, user } = payload;
-      localStorage.setItem("credentials", payload);
+      localStorage.setItem("credentials", JSON.stringify(payload));
       return { ...state, user: user };
       break;
     case "LOGOUT":
@@ -38,6 +38,7 @@ export default (state, { type, payload }) => {
       };
       break;
     case "DELETE":
+      console.log(payload)
       return {
         ...state,
         results: state.results.filter((res) => res.id !== payload),

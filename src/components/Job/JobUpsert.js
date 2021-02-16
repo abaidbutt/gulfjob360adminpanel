@@ -212,7 +212,7 @@ export default function JobUpsert() {
     <>
       <Container component="main" maxWidth="md">
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} Job </Title>
+          <Title>{editId?'Edit':'Add'} Job </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <Grid container spacing={3}>
               <Grid item xs={12}>

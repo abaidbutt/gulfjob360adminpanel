@@ -36,15 +36,16 @@ export default function Orders() {
   const { fetchData, ctxLoad, ctxDetails, ctxResults } = useContext(
     AdminContext
   );
+  const crtPage = ctxDetails.current_page;
 
   const handleChange = useCallback((event, value) => {
     fetchData(
-      `http://gulfjobs.nwsols.com/api/users?per_page=${5}&page=${value}`
+      `http://gulfjobs.nwsols.com/api/users?per_page=${10}&page=${value}`
     );
   }, []);
 
   useEffect(() => {
-    fetchData(`http://gulfjobs.nwsols.com/api/users?per_page=${5}&page=${1}`);
+    fetchData(`http://gulfjobs.nwsols.com/api/users?per_page=${10}&page=${1}`);
     console.log(ctxResults);
   }, []);
 
@@ -57,14 +58,14 @@ export default function Orders() {
       ) : (
         <>
           <Box display="flex" justifyContent="space-between">
-            <Title className={classes.title}>Advertisements </Title>
+            <Title className={classes.title}>Users </Title>
             <Title className={classes.title}>Total: {ctxDetails.total} </Title>
           </Box>
           <TableContainer>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>Id</StyledTableCell>
+                  <StyledTableCell>S.No</StyledTableCell>
                   <StyledTableCell>Name</StyledTableCell>
                   <StyledTableCell>Email</StyledTableCell>
                   <StyledTableCell>Mobile Number</StyledTableCell>
@@ -77,7 +78,7 @@ export default function Orders() {
                 {ctxResults.map((row, index) => (
                   <TableRow key={row.id}>
                     <TableCell component="th" scope="row">
-                      {index + 1}
+                      {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
                     </TableCell>
                     <TableCell>
                       {row.first_name} {row.last_name}

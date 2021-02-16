@@ -9,9 +9,11 @@ import {
 import { BaseUrl } from "../../config";
 import { Delete, Close } from "@material-ui/icons";
 import { AdminContext } from "../../context/AdminContext";
+import {useHistory} from 'react-router-dom'
 export default function AdsDel({ delId }) {
   const { handleDelete } = useContext(AdminContext);
   const [open, setOpen] = useState(false);
+  const history=useHistory()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,6 +25,9 @@ export default function AdsDel({ delId }) {
 
   const AdsDelete = useCallback(() => {
     handleDelete(`${BaseUrl}/advertisements/${delId}`, delId);
+    history.push('/admin/ads')
+    setOpen(false);
+
   }, []);
   return (
     <div>

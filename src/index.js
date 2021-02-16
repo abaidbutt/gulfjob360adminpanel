@@ -2,13 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import 'draft-js/dist/Draft.css';
+
 
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 
 import { CssBaseline } from "@material-ui/core";
-import { SnackbarProvider } from "notistack";
 
 import AdminProvider from "./context/AdminContext";
 import { theme } from "./theme";
@@ -22,13 +21,11 @@ function Main() {
   );
 }
 ReactDOM.render(
-  <SnackbarProvider maxSnack={2}>
-    <AdminProvider>
-      <Router>
-        <Main />
-      </Router>
-    </AdminProvider>
-  </SnackbarProvider>,
+  <AdminProvider>
+    <Router>
+      <Main />
+    </Router>
+  </AdminProvider>,
   document.getElementById("root")
 );
 

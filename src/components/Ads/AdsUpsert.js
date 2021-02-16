@@ -95,7 +95,7 @@ export default function AdsUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>Edit Advertisement </Title>
+          <Title>{editId?'Edit':'Add'} Advertisement </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"

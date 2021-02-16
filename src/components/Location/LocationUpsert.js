@@ -79,7 +79,7 @@ export default function AdsUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} Location </Title>
+          <Title>{editId?'Edit':'Add'} Location </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"

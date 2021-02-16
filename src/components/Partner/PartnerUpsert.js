@@ -78,9 +78,21 @@ export default function AdsUpsert() {
     setFileOpen(true);
   }
 
+  // const openFile = (event) => {
+  //   const input = event.target;
+
+  //   const reader = new FileReader();
+  //   reader.onload = function () {
+  //     const dataURL = reader.result;
+  //     const output = document.getElementById("output");
+  //     output.src = dataURL;
+  //   };
+  //   reader.readAsDataURL(input.files[0]);
+  //   console.log(reader, input);
+  // };
   const EditSubmit = async (data) => {
     // console.log(data.image[0].name);
-    // setValues({ ...values, image: data.image[0].name });
+    values.image=data.image[0].name
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/partners/${editId}`, values, rsl, rej);
@@ -96,7 +108,7 @@ export default function AdsUpsert() {
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId ? "Edit" : "Insert"} Partner </Title>
+          <Title>{editId ? "Edit" : "Add"} Partner </Title>
           <form
             className={classes.form}
             onSubmit={handleSubmit(EditSubmit)}
@@ -117,7 +129,6 @@ export default function AdsUpsert() {
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
-
             <TextField
               name="description"
               label="description *"
@@ -135,16 +146,17 @@ export default function AdsUpsert() {
               error={errors.description ? true : false}
             />
             <FormHelperText error>{errors.description?.message}</FormHelperText>
-            <Button onClick={handleOpen}>Add Image</Button>
+            {/* <Button onClick={handleOpen}>Add Image</Button>
             <DropzoneDialog
+            
               open={fileOpen}
               onSave={handleSave}
               acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
               showPreviews={true}
               maxFileSize={5000000}
               onClose={handleClose}
-            />
-            {/* <input
+            /> */}
+            <input
               accept="image/*"
               style={{ display: "none" }}
               id="contained-button-file"
@@ -152,12 +164,12 @@ export default function AdsUpsert() {
               name="image"
               ref={register}
             />
-
+            {/* // onChange={openFile} */}
             <label htmlFor="contained-button-file">
               <Button variant="contained" color="primary" component="span">
                 Upload
               </Button>
-            </label> */}
+            </label>
             <div className={classes.wrapper}>
               <Button
                 type="submit"

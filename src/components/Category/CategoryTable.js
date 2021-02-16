@@ -9,7 +9,7 @@ const CategoryTable = ({ row, index, crtPage }) => {
   return (
     <TableRow key={row.id}>
       <TableCell component="th" scope="row">
-        {index + 1 + (crtPage > 1 ? crtPage * 5 - 5 : 0)}
+      {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.name}</TableCell>
       <TableCell>{row.type}</TableCell>

@@ -26,14 +26,14 @@ export default function Ads() {
 
   const handleChange = useCallback((event, value) => {
     fetchData(
-      `http://gulfjobs.nwsols.com/api/advertisements?per_page=${5}&page=${value}`
+      `http://gulfjobs.nwsols.com/api/advertisements?per_page=${10}&page=${value}`
     );
     console.log(value);
   }, []);
 
   useEffect(() => {
     fetchData(
-      `http://gulfjobs.nwsols.com/api/advertisements?per_page=${5}&page=${1}`
+      `http://gulfjobs.nwsols.com/api/advertisements?per_page=${10}&page=${1}`
     );
     console.log(ctxResults);
   }, []);

@@ -50,7 +50,9 @@ const AdminProvider = ({ children }) => {
       console.log(delId);
       const response = await Axios.delete(routeName);
       const res = response.data;
-      dispatch({ type: "DELETE", payload: res });
+      if (response.status === 202) {
+        dispatch({ type: "DELETE", payload: delId });
+      }
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.response });
     }

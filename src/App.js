@@ -9,10 +9,10 @@ import { AnimatedSwitch, AnimatedRoute } from "react-router-transition";
 import { AdminContext } from "./context/AdminContext";
 function App() {
   const { ctxUser } = useContext(AdminContext);
+  // const { user, token } = JSON.parse(ctxUser);
   useEffect(() => {
     console.log(ctxUser);
   });
-
   return (
     <>
       <>
@@ -29,10 +29,9 @@ function App() {
               // transform: `translateX(${styles.offset}%)`,
             })}
             exact
-            path="/admin/login"
+            path={["/", "/admin/login"]}
           >
             <Login />
-            {/* <Login /> */}
           </AnimatedRoute>
           <PrivateRoute path="/admin">
             <Routes />
