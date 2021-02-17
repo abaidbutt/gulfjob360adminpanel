@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { createContext, useReducer } from "react";
 import adminReducer, { initState } from "./AdminReducer";
 import Axios from "axios";
@@ -144,31 +144,53 @@ const AdminProvider = ({ children }) => {
     toast("Logout Successfully");
   }
   // useEffect(() => {
-  //
   //   fetchData(dataSource);
   // }, [dataSource]);
+  return useMemo(() => {
+    return (
+      <AdminContext.Provider
+        value={{
+          ctxLoad: state.loading,
+          ctxDetails: state.details,
+          ctxResults: state.results,
+          ctxUser: state.user,
+          fetchData,
+          handleDelete,
+          handleEdit,
+          handleCreate,
+          handleGet,
+          handleCategory,
+          handleFetch,
+          loginUser,
+          logoutUser,
+        }}
+      >
+        {children}
+      </AdminContext.Provider>
+    );
+  }, [state, dispatch]);
 
-  return (
-    <AdminContext.Provider
-      value={{
-        ctxLoad: state.loading,
-        ctxDetails: state.details,
-        ctxResults: state.results,
-        ctxUser: state.user,
-        fetchData,
-        handleDelete,
-        handleEdit,
-        handleCreate,
-        handleGet,
-        handleCategory,
-        handleFetch,
-        loginUser,
-        logoutUser,
-      }}
-    >
-      {children}
-    </AdminContext.Provider>
-  );
+  // return (
+  //   <AdminContext.Provider
+  //     value={{
+  //       ctxLoad: state.loading,
+  //       ctxDetails: state.details,
+  //       ctxResults: state.results,
+  //       ctxUser: state.user,
+  //       fetchData,
+  //       handleDelete,
+  //       handleEdit,
+  //       handleCreate,
+  //       handleGet,
+  //       handleCategory,
+  //       handleFetch,
+  //       loginUser,
+  //       logoutUser,
+  //     }}
+  //   >
+  //     {children}
+  //   </AdminContext.Provider>
+  // );
 };
 
 export default AdminProvider;

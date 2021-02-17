@@ -6,11 +6,14 @@ import {
   Container,
   FormHelperText,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@material-ui/core";
 import { BaseUrl } from "../../config";
 // import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
@@ -20,7 +23,7 @@ export default function TipUpsert() {
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
-  const [errMsg, setErrMsg]=useState(null)
+  const [errMsg, setErrMsg] = useState(null);
   const [category, setCategory] = useState();
   const [values, setValues] = useState({
     title: "",
@@ -40,7 +43,7 @@ export default function TipUpsert() {
   );
   let { editId } = useParams();
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors, control } = useForm({
     mode: "onSubmit",
     reValidateMode: "onChange",
     defaultValues: {},
@@ -83,7 +86,6 @@ export default function TipUpsert() {
         console.log(cateGory);
       })
       .catch((err) => {
-        
         console.log(err);
       });
   }, []);
@@ -99,11 +101,13 @@ export default function TipUpsert() {
     })
       .then((res) => history.push("/admin/service"))
       .catch((err) => {
-        setErrMsg(err)
-        console.log(err)
+        setErrMsg(err);
+        console.log(err);
       });
   };
-
+  useEffect(() => {
+    console.log(errors);
+  });
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
@@ -193,25 +197,20 @@ export default function TipUpsert() {
             {errMsg?.slug.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
+
             <TextField
               label="status"
               select
+              name="status"
               margin="dense"
               variant="outlined"
               inputProps={{
-                inputRef: (ref) => {
-                  if (!ref) return;
+                inputRef: () =>
                   register({
-                    name: "status",
-                    value: ref.value,
-                  });
-                },
-                onChange: (e) => {
-                  const { status } = values;
-
-                  setValues({ ...values, status: e.target.value });
-                },
+                    required: "Thisi s Required",
+                  }),
               }}
+              onChange={handleChange}
               value={values.status}
               fullWidth
               error={errors.status ? true : false}
@@ -227,25 +226,17 @@ export default function TipUpsert() {
               select
               margin="dense"
               variant="outlined"
-              inputProps={{
-                inputRef: (ref) => {
-                  if (!ref) return;
-                  register({
-                    name: "category_id",
-                    value: ref.value,
-                  });
-                },
-                onChange: (e) => {
-                  const { category_id } = values;
-
-                  setValues({
-                    ...values,
-                    category_id: e.target.value,
-                  });
-                },
-              }}
-              // SelectProps={{
-              //   value: values.category_id,
+              name="category_id"
+              onChange={handleChange}
+              // inputProps={{
+              //   inputRef: (ref) => {
+              //     if (!ref) return;
+              //     register({
+              //       name: "status",
+              //       value: ref.value,
+              //       required: "Thisis Required",
+              //     });
+              //   },
               // }}
               value={values.category_id}
               fullWidth

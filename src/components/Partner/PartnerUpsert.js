@@ -92,13 +92,18 @@ export default function AdsUpsert() {
   //   console.log(reader, input);
   // };
   const EditSubmit = async (data) => {
-    // console.log(data.image[0].name);
-    values.image = data.image[0].name;
+    // console.log(data.image[0].name)
+    const formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("description", values.description);
+    values.image = data.image[0];
+    formData.append("image", values.image);
+
     new Promise((rsl, rej) => {
       if (editId) {
-        handleEdit(`${BaseUrl}/partners/${editId}`, values, rsl, rej);
+        handleEdit(`${BaseUrl}/partners/${editId}`, formData, rsl, rej);
       } else {
-        handleCreate(`${BaseUrl}/partners`, values, rsl, rej);
+        handleCreate(`${BaseUrl}/partners`, formData, rsl, rej);
       }
     })
       .then((res) => history.push("/admin/partner"))
@@ -170,6 +175,10 @@ export default function AdsUpsert() {
               type="file"
               name="image"
               ref={register}
+              onChange={(e) => {
+                // console.log(e.target.files[0]);
+                setValues({ ...values, image: e.target.files[0].name });
+              }}
             />
             {/* // onChange={openFile} */}
             <label htmlFor="contained-button-file">
