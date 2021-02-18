@@ -44,7 +44,7 @@ export default function MenuBar() {
     setSelectedIndex(index);
   };
   const handleClick = (item) => {
-    const menuchange = { ...menu, [item]: !menu[item] };
+    const menuchange = { [item]: !menu[item] };
     setMenu(menuchange);
   };
 

@@ -158,16 +158,7 @@ export default function AdsUpsert() {
               error={errors.description ? true : false}
             />
             <FormHelperText error>{errors.description?.message}</FormHelperText>
-            {/* <Button onClick={handleOpen}>Add Image</Button>
-            <DropzoneDialog
-            
-              open={fileOpen}
-              onSave={handleSave}
-              acceptedFiles={["image/jpeg", "image/png", "image/bmp"]}
-              showPreviews={true}
-              maxFileSize={5000000}
-              onClose={handleClose}
-            /> */}
+          
             <input
               accept="image/*"
               style={{ display: "none" }}

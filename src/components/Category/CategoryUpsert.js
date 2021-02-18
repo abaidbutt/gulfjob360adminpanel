@@ -66,9 +66,7 @@ function CategoryUpsert() {
     shouldFocusError: true,
     shouldUnregister: true,
   });
-  useEffect(() => {
-    console.log(errors);
-  });
+
   useEffect(() => {
     if (editId) {
       new Promise((rsl, rej) => {
@@ -91,18 +89,23 @@ function CategoryUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
-    new Promise((rsl, rej) => {
-      if (editId) {
-        handleEdit(`${BaseUrl}/categories/${editId}`, values, rsl, rej);
-      } else {
-        handleCreate(`${BaseUrl}/categories`, values, rsl, rej);
-      }
-    })
-      .then((res) => history.push("/admin/category"))
-      .catch((err) => {
-        setErrMsg(err);
-        console.log(err);
-      });
+    if (values.type) {
+      console.log(values.type);
+      return;
+    } else {
+      new Promise((rsl, rej) => {
+        if (editId) {
+          handleEdit(`${BaseUrl}/categories/${editId}`, values, rsl, rej);
+        } else {
+          handleCreate(`${BaseUrl}/categories`, values, rsl, rej);
+        }
+      })
+        .then((res) => history.push("/admin/category"))
+        .catch((err) => {
+          setErrMsg(err);
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -132,8 +135,11 @@ function CategoryUpsert() {
               })}
             />
             <FormHelperText error>{errors.name?.message}</FormHelperText>
-            {errMsg?.name.map((err) => (
-              <FormHelperText error> {err}</FormHelperText>
+            {errMsg?.name.map((err, i) => (
+              <FormHelperText error key={i}>
+                {" "}
+                {err}
+              </FormHelperText>
             ))}
             <TextField
               name="slug"
@@ -156,12 +162,15 @@ function CategoryUpsert() {
                 required: "This is Required",
               })}
               error={errors.slug ? true : false}
-              FormHelperTextProps={errors.type?.message}
             />
             <FormHelperText error>{errors.slug?.message}</FormHelperText>
-            {errMsg?.slug.map((err) => (
-              <FormHelperText error> {err}</FormHelperText>
+            {errMsg?.slug.map((err, i) => (
+              <FormHelperText error key={i}>
+                {" "}
+                {err}
+              </FormHelperText>
             ))}
+
             <TextField
               label="Category Type *"
               margin="dense"
@@ -196,7 +205,12 @@ function CategoryUpsert() {
               ))}
             </TextField>
             <FormHelperText error>{errors.type?.message}</FormHelperText>
-
+            {errMsg?.type.map((err, i) => (
+              <FormHelperText error key={i}>
+                {" "}
+                {err}
+              </FormHelperText>
+            ))}
             <div className={classes.wrapper}>
               <Button
                 type="submit"

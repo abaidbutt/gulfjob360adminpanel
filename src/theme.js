@@ -92,3 +92,23 @@ export const theme = createMuiTheme({
     },
   },
 });
+export const defaultTheme = createMuiTheme();
+
+Object.assign(defaultTheme, {
+  overrides: {
+    MUIRichTextEditor: {
+      root: {
+        marginTop: 20,
+        width: "100%",
+        marginBottom: "20",
+        height: "50vh",
+        border: "1px solid lightgray",
+        padding: "10px",
+        borderRadius: "10px",
+      },
+      editor: {
+        borderTop: "1px solid gray",
+      },
+    },
+  },
+});

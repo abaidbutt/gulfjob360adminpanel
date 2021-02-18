@@ -12,8 +12,9 @@ const AdminProvider = ({ children }) => {
   useEffect(() => {
     console.log(state.error);
     if (state.error) {
-      toast("Please Provide Correct Credentials");
+      toast.error("Something went wrong");
     }
+    return () => dispatch({ type: "ERROR", payload: "" });
   }, [state?.error]);
   // useEffect(() => {
   //   console.log(state);
@@ -55,7 +56,7 @@ const AdminProvider = ({ children }) => {
       const res = response.data;
       if (response.status === 202) {
         dispatch({ type: "DELETE", payload: delId });
-        toast("Delete Successfully");
+        toast.success("Delete Successfully");
       }
     } catch (err) {
       dispatch({ type: "ERROR", payload: err.response });
@@ -69,7 +70,7 @@ const AdminProvider = ({ children }) => {
 
       if (res.success === 1) {
         dispatch({ type: "UPDATE", payload: res });
-        toast("Update Successfully");
+        toast.success("Update Successfully");
       }
 
       rsl();
@@ -88,7 +89,7 @@ const AdminProvider = ({ children }) => {
 
       if (response.status === 201) {
         dispatch({ type: "CREATE", payload: res });
-        toast("Create Successfully");
+        toast.success("Create Successfully");
       }
       rsl();
     } catch (err) {
@@ -131,7 +132,7 @@ const AdminProvider = ({ children }) => {
       const res = response.data;
       if (response.status === 202) {
         dispatch({ type: "LOGIN", payload: res.success });
-        toast("Login Successfully");
+        toast.success("Login Successfully");
       }
       rsl(res.success.token);
     } catch (err) {
