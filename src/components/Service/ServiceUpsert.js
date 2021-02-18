@@ -61,7 +61,6 @@ export default function TipUpsert() {
         handleGet(`${BaseUrl}/services/${editId}`, editId, rsl, rej);
       })
         .then((res) => {
-          console.log(res, editId);
           const { title, description, price, status, slug, category_id } = res;
           const formData = {
             title,
@@ -85,7 +84,6 @@ export default function TipUpsert() {
       .then((res) => {
         const cateGory = res.filter((resCat) => resCat.type === "services");
         setCategory(cateGory);
-        console.log(cateGory);
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +93,6 @@ export default function TipUpsert() {
   const EditSubmit = async (data) => {
     new Promise((rsl, rej) => {
       if (editId) {
-        console.log(values);
         handleEdit(`${BaseUrl}/services/${editId}`, values, rsl, rej);
       } else {
         handleCreate(`${BaseUrl}/services`, values, rsl, rej);
@@ -104,13 +101,9 @@ export default function TipUpsert() {
       .then((res) => history.push("/admin/service"))
       .catch((err) => {
         setErrMsg(err);
-        console.log(err);
       });
   };
-  useEffect(() => {
-    console.log(errors);
-  });
-  return (
+   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
@@ -140,7 +133,7 @@ export default function TipUpsert() {
             {errMsg?.title.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-       
+
             <TextField
               type="text"
               label="Service Description *"

@@ -79,20 +79,7 @@ export default function AdsUpsert() {
     setFileOpen(true);
   }
 
-  // const openFile = (event) => {
-  //   const input = event.target;
-
-  //   const reader = new FileReader();
-  //   reader.onload = function () {
-  //     const dataURL = reader.result;
-  //     const output = document.getElementById("output");
-  //     output.src = dataURL;
-  //   };
-  //   reader.readAsDataURL(input.files[0]);
-  //   console.log(reader, input);
-  // };
   const EditSubmit = async (data) => {
-    // console.log(data.image[0].name)
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("description", values.description);
@@ -109,7 +96,6 @@ export default function AdsUpsert() {
       .then((res) => history.push("/admin/partner"))
       .catch((err) => {
         setErrMsg(err);
-        console.log(err);
       });
   };
 
@@ -158,7 +144,7 @@ export default function AdsUpsert() {
               error={errors.description ? true : false}
             />
             <FormHelperText error>{errors.description?.message}</FormHelperText>
-          
+
             <input
               accept="image/*"
               style={{ display: "none" }}
@@ -167,11 +153,10 @@ export default function AdsUpsert() {
               name="image"
               ref={register}
               onChange={(e) => {
-                // console.log(e.target.files[0]);
                 setValues({ ...values, image: e.target.files[0].name });
               }}
             />
-            {/* // onChange={openFile} */}
+
             <label htmlFor="contained-button-file">
               <Button variant="contained" color="primary" component="span">
                 Upload
