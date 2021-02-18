@@ -1,7 +1,5 @@
 import React from "react";
-// import * as FaIcon from "react-icons/fa";
-// import * as VscIcon from "react-icons/vsc";
-// import * as BsIcon from "react-icons/bs";
+
 import {
   CastForEducation,
   LocationOn,
