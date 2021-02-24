@@ -6,10 +6,10 @@ export const initState = {
   details: {},
 };
 
-export default (state, { type, payload }) => {
+const adminReducer = (state, { type, payload }) => {
   switch (type) {
     case "LOGIN":
-      const { token, user } = payload;
+      const { user } = payload;
       localStorage.setItem("credentials", JSON.stringify(payload));
       return { ...state, user: user };
       break;
@@ -38,7 +38,7 @@ export default (state, { type, payload }) => {
       };
       break;
     case "DELETE":
-      console.log(payload)
+      console.log(payload);
       return {
         ...state,
         results: state.results.filter((res) => res.id !== payload),
@@ -52,3 +52,5 @@ export default (state, { type, payload }) => {
       break;
   }
 };
+
+export default adminReducer;

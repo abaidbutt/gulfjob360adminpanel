@@ -7,7 +7,6 @@ import {
   Typography,
   Container,
   FormHelperText,
-  
 } from "@material-ui/core";
 import { LockOutlined } from "@material-ui/icons";
 
@@ -19,9 +18,8 @@ import { BaseUrl } from "../config";
 import { useForm } from "react-hook-form";
 import { AdminContext } from "../context/AdminContext";
 
-
+import { toast } from "react-toastify";
 export default function Login() {
-  
   const { loginUser } = useContext(AdminContext);
   const [msg, setMsg] = useState(null);
   const classes = useStyles();
@@ -47,6 +45,8 @@ export default function Login() {
       })
       .catch((err) => {
         console.log(err);
+        setMsg(err);
+        toast("Please Check Login credentials");
       });
   };
 
@@ -62,6 +62,9 @@ export default function Login() {
 
         <form className={classes.form} onSubmit={handleSubmit(handleLogin)}>
           <div className={classes.input}>
+            <FormHelperText error>
+              {msg ? "Check Your Login Credentials" : ""}
+            </FormHelperText>
             <TextField
               autoFocus
               variant="outlined"
@@ -145,8 +148,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "25px",
     borderRadius: "25px",
   },
-  input:{
-    marginTop:theme.spacing(2)
+  input: {
+    marginTop: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),

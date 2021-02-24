@@ -11,7 +11,8 @@ import { BaseUrl } from "../../config";
 // import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
-
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
 export default function TipUpsert() {
@@ -97,7 +98,10 @@ export default function TipUpsert() {
         console.log(err)
       });
   };
-
+  const handleContent = (e, editor) => {
+    const data = editor.getData();
+    setValues({ ...values, description: data });
+  };
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
@@ -128,7 +132,12 @@ export default function TipUpsert() {
             {errMsg?.heading.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-            <TextField
+             <CKEditor
+              editor={ClassicEditor}
+              data={values.description}
+              onChange={handleContent}
+            />
+            {/* <TextField
               type="text"
               label="Tip Description *"
               name="description"
@@ -144,7 +153,7 @@ export default function TipUpsert() {
                 required: "This is Required",
               })}
             />
-            <FormHelperText error>{errors.description?.message}</FormHelperText>
+            <FormHelperText error>{errors.description?.message}</FormHelperText> */}
 
             <TextField
               name="slug"

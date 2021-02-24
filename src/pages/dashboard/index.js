@@ -53,7 +53,6 @@ export default function Dashboard({ children }) {
     <div className={classes.root}>
       <AppBar
         position="fixed"
-        className={classes.appBar}
         className={clsx(classes.appBar, open && classes.appBarShift)}
       >
         <Toolbar className={classes.toolbar}>
@@ -98,6 +97,7 @@ export default function Dashboard({ children }) {
           <img
             src={`${process.env.PUBLIC_URL}/assets/img/gulfblacklogo.png`}
             width={drawerWidth / 2}
+            alt={"GulfJob360"}
           />
         </div>
 
@@ -161,9 +161,6 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     overflowY: "auto",
     width: drawerWidth,
-    // height:'100vh',
-    // paddingTop:theme.spacing(0),
-    // paddingBottom:theme.spacing(0),
 
     display: "block",
 
@@ -210,7 +207,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     // overflow: "auto",
     flexDirection: "column",
-    
   },
   fixedHeight: {
     // height: 240,

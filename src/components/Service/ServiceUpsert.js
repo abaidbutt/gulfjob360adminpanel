@@ -6,16 +6,13 @@ import {
   Container,
   FormHelperText,
   MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
 } from "@material-ui/core";
 import { BaseUrl } from "../../config";
-import MUIRichTextEditor from "mui-rte";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles, MuiThemeProvider } from "@material-ui/core/styles";
-import { useForm, Controller } from "react-hook-form";
-import { defaultTheme } from "../../theme";
+import { makeStyles } from "@material-ui/core/styles";
+import { useForm } from "react-hook-form";
 
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
@@ -103,7 +100,11 @@ export default function TipUpsert() {
         setErrMsg(err);
       });
   };
-   return (
+  const handleContent = (e, editor) => {
+    const data = editor.getData();
+    setValues({ ...values, description: data });
+  };
+  return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
@@ -133,7 +134,12 @@ export default function TipUpsert() {
             {errMsg?.title.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-
+            <CKEditor
+              editor={ClassicEditor}
+              data={values.description}
+              onChange={handleContent}
+            />
+            {/* 
             <TextField
               type="text"
               label="Service Description *"
@@ -150,7 +156,7 @@ export default function TipUpsert() {
                 required: "This is Required",
               })}
             />
-            <FormHelperText error>{errors.description?.message}</FormHelperText>
+            <FormHelperText error>{errors.description?.message}</FormHelperText> */}
             <TextField
               type="text"
               label="Service Price *"

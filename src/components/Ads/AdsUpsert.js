@@ -13,7 +13,7 @@ import { BaseUrl } from "../../config";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { makeStyles } from "@material-ui/core/styles";
-
+import htmr from "htmr";
 import { useForm } from "react-hook-form";
 
 import Title from "../Title";
@@ -61,10 +61,11 @@ export default function AdsUpsert() {
           const { location, content, status } = res;
 
           const formData = {
-            location,
-            content,
-            status,
+            location: location,
+            content: "" || content || "",
+            status: status,
           };
+          console.log(formData, res);
           setValues(formData);
         })
         .catch((err) => {
@@ -88,6 +89,9 @@ export default function AdsUpsert() {
         setErrMsg(err);
       });
   };
+  useEffect(() => {
+    console.log(values);
+  });
 
   const handleContent = (e, editor) => {
     const data = editor.getData();

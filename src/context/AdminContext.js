@@ -10,15 +10,12 @@ const AdminProvider = ({ children }) => {
   const [state, dispatch] = useReducer(adminReducer, initState);
 
   useEffect(() => {
-    console.log(state.error);
     if (state.error) {
       toast.error("Something went wrong");
     }
     return () => dispatch({ type: "ERROR", payload: "" });
-  }, [state?.error]);
-  // useEffect(() => {
-  //   console.log(state);
-  // });
+  }, [state]);
+
   async function handleFetch(routeName, rsl, rej) {
     try {
       const response = await Axios.get(routeName);
@@ -51,9 +48,8 @@ const AdminProvider = ({ children }) => {
 
   const handleDelete = async (routeName, delId) => {
     try {
-      console.log(delId);
       const response = await Axios.delete(routeName);
-      const res = response.data;
+
       if (response.status === 202) {
         dispatch({ type: "DELETE", payload: delId });
         toast.success("Delete Successfully");
@@ -121,7 +117,8 @@ const AdminProvider = ({ children }) => {
 
       dispatch({ type: "CATEGORY" });
     } catch (err) {
-      dispatch({ type: "ERROR", payload: err.response.error.data });
+      const { data } = err.response?.error;
+      dispatch({ type: "ERROR", payload: data });
       rej();
     }
     dispatch({ type: "LOADING", payload: false });

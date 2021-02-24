@@ -8,12 +8,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  
   Box,
   Typography,
-  
   CircularProgress,
-  
 } from "@material-ui/core";
 import { AdminContext } from "../../context/AdminContext";
 import { Pagination } from "@material-ui/lab";
@@ -34,9 +31,7 @@ export default function Job() {
   }, []);
 
   useEffect(() => {
-    fetchData(
-      `http://gulfjobs.nwsols.com/api/jobs?per_page=${10}&page=${1}`
-    );
+    fetchData(`http://gulfjobs.nwsols.com/api/jobs?per_page=${10}&page=${1}`);
     console.log(ctxResults);
   }, []);
 
@@ -59,11 +54,12 @@ export default function Job() {
               className={classes.title}
               component="h1"
               variant="h2"
-              color="primary"
+              color="secondary"
               gutterBottom
             >
-              Total: {ctxDetails.total}{" "}
+              Total:
             </Typography>
+            {ctxDetails.total}{" "}
           </Box>
           <TableContainer>
             <Table className={classes.table}>
@@ -83,7 +79,12 @@ export default function Job() {
               </TableHead>
               <TableBody>
                 {ctxResults.map((row, index) => (
-                  <JobTable row={row} index={index} key={index} crtPage={ctxDetails.current_page} />
+                  <JobTable
+                    row={row}
+                    index={index}
+                    key={index}
+                    crtPage={ctxDetails.current_page}
+                  />
                 ))}
               </TableBody>
             </Table>

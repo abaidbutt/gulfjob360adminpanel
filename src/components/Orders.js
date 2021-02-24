@@ -87,8 +87,10 @@ export default function Orders() {
                     <TableCell>{row.mobile_number}</TableCell>
                     <TableCell align="center">
                       <Moment
-                        date={row.created_at.split("T")[0].replace(/-/g, "")}
-                        fromNow
+                        date={row.created_at.split(".")[0]}
+                        from={new Date().toJSON().split(".")[0]}
+                        ago
+                        interval={30000}
                       />
                     </TableCell>
                   </TableRow>

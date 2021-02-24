@@ -10,12 +10,11 @@ import { BaseUrl } from "../../config";
 // import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
-import { DropzoneDialog } from "material-ui-dropzone";
-
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Title from "../Title";
 import { AdminContext } from "../../context/AdminContext";
 export default function AdsUpsert() {
-  const [fileOpen, setFileOpen] = useState(false);
   const classes = useStyles();
   const history = useHistory();
   const [errMsg, setErrMsg] = useState(null);
@@ -65,19 +64,6 @@ export default function AdsUpsert() {
         });
     }
   }, []);
-  function handleClose() {
-    setFileOpen(false);
-  }
-
-  function handleSave(files) {
-    setFileOpen(false);
-
-    setValues({ ...values, image: files });
-  }
-
-  function handleOpen() {
-    setFileOpen(true);
-  }
 
   const EditSubmit = async (data) => {
     const formData = new FormData();
@@ -98,7 +84,10 @@ export default function AdsUpsert() {
         setErrMsg(err);
       });
   };
-
+  const handleContent = (e, editor) => {
+    const data = editor.getData();
+    setValues({ ...values, description: data });
+  };
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
@@ -127,7 +116,15 @@ export default function AdsUpsert() {
             {errMsg?.name.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-            <TextField
+            <CKEditor
+              editor={ClassicEditor}
+              data={values.description}
+              onChange={handleContent}
+            />
+
+            {/* <FormHelperText error>{errors.description?.message}</FormHelperText> */}
+
+            {/* <TextField
               name="description"
               label="description *"
               variant="outlined"
@@ -142,26 +139,26 @@ export default function AdsUpsert() {
                 required: "This is Required",
               })}
               error={errors.description ? true : false}
-            />
-            <FormHelperText error>{errors.description?.message}</FormHelperText>
+            /> */}
+            <div style={{marginTop:'10px'}}>
+              <input
+                accept="image/*"
+                style={{ display: "none" }}
+                id="contained-button-file"
+                type="file"
+                name="image"
+                ref={register}
+                onChange={(e) => {
+                  setValues({ ...values, image: e.target.files[0].name });
+                }}
+              />
 
-            <input
-              accept="image/*"
-              style={{ display: "none" }}
-              id="contained-button-file"
-              type="file"
-              name="image"
-              ref={register}
-              onChange={(e) => {
-                setValues({ ...values, image: e.target.files[0].name });
-              }}
-            />
-
-            <label htmlFor="contained-button-file">
-              <Button variant="contained" color="primary" component="span">
-                Upload
-              </Button>
-            </label>
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" color="primary" component="span">
+                  Upload
+                </Button>
+              </label>
+            </div>
             <div className={classes.wrapper}>
               <Button
                 type="submit"

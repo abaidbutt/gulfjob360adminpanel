@@ -18,9 +18,9 @@ export default function TipTable({ row, index, crtPage }) {
       </TableCell>
       <TableCell>{row.category_id}</TableCell>
       <TableCell align="center">
-        <Moment
-          date={row.created_at.split("T")[0]}
-          from={new Date().toISOString().split("T")[0]}
+      <Moment
+          date={row.created_at.split(".")[0]}
+          from={new Date().toJSON().split(".")[0]}
           ago
           interval={30000}
         />

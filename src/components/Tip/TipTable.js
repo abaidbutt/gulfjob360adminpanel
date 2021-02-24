@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
 import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
@@ -9,7 +9,7 @@ export default function TipTable({ row, index, crtPage }) {
   return (
     <TableRow key={row.id}>
       <TableCell component="th" scope="row">
-      {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
+        {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.heading}</TableCell>
       <TableCell>{row.description}</TableCell>
@@ -17,8 +17,8 @@ export default function TipTable({ row, index, crtPage }) {
       <TableCell>{row.category_id}</TableCell>
       <TableCell align="center">
         <Moment
-          date={row.created_at.split("T")[0]}
-          from={new Date().toISOString().split("T")[0]}
+          date={row.created_at.split(".")[0]}
+          from={new Date().toJSON().split(".")[0]}
           ago
           interval={30000}
         />

@@ -1,24 +1,24 @@
-import React , {useState}from "react";
+import React, { useState } from "react";
 import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
 import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import AdsDel from "./AdsDel";
+import htmr from "htmr";
 
 import { Link } from "react-router-dom";
 const AdsTable = ({ row, index, crtPage }) => {
-  
   return (
     <TableRow key={row.id}>
       <TableCell component="th" scope="row">
         {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.location}</TableCell>
-      <TableCell>{row.content}</TableCell>
+      <TableCell>{htmr(row?.content)}</TableCell>
       <TableCell>{row.status === 0 ? "In-Active" : "Active"}</TableCell>
       <TableCell align="center">
         <Moment
-          date={row.created_at.split("T")[0]}
-          from={new Date().toISOString().split("T")[0]}
+          date={row.created_at.split(".")[0]}
+          from={new Date().toJSON().split(".")[0]}
           ago
           interval={30000}
         />
