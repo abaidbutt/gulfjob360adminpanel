@@ -22,7 +22,7 @@ function App() {
             <Routes />
           </PrivateRoute>
 
-          {/* <Route component={PageError} /> */}
+          <Route component={PageError} />
         </Switch>
       </>
     </>
