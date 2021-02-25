@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { spring, AnimatedSwitch } from "react-router-transition";
 import Chart from "../components/Chart";
 
@@ -32,85 +32,110 @@ import ServiceUpsert from "../components/Service/ServiceUpsert";
 import PartnerUpsert from "../components/Partner/PartnerUpsert";
 import JobView from "../components/Job/JobView";
 const Index = (props) => {
+  const { path } = useRouteMatch();
+
   return (
     <>
       <Dashboard {...props}>
         <>
-          <Route exact path="/admin" component={Chart} />
-          <Route exact path="/admin/user" component={Orders} />
-          <Route exact path="/admin/ads" component={Ads} />
-          <Route exact path="/admin/ads/create" component={AdsUpsert} />
-          <Route exact path="/admin/ads/edit/:editId" component={AdsUpsert} />
-          <Route exact path="/admin/category" component={Category} />
+          <Route exact path={`${path}`} component={Chart} />
+          <Route exact path={`${path}/user`} component={Orders} />
+          <Route exact path={`${path}/ads`} component={Ads} />
+          <Route exact path={`${path}/ads/create`} component={AdsUpsert} />
           <Route
             exact
-            path="/admin/category/create"
+            path={`${path}/ads/edit/:editId`}
+            component={AdsUpsert}
+          />
+          <Route exact path={`${path}/category`} component={Category} />
+          <Route
+            exact
+            path={`${path}/category/create`}
             component={CategoryUpsert}
           />
           <Route
             exact
-            path="/admin/category/edit/:editId"
+            path={`${path}/category/edit/:editId`}
             component={CategoryUpsert}
           />
-          <Route exact path="/admin/tip" component={Tip} />
-          <Route exact path="/admin/tip/create" component={TipUpsert} />
-          <Route exact path="/admin/tip/edit/:editId" component={TipUpsert} />
-          <Route exact path="/admin/education" component={Education} />
+          <Route exact path={`${path}/tip`} component={Tip} />
+          <Route exact path={`${path}/tip/create`} component={TipUpsert} />
           <Route
             exact
-            path="/admin/education/create"
+            path={`${path}/tip/edit/:editId`}
+            component={TipUpsert}
+          />
+          <Route exact path={`${path}/education`} component={Education} />
+          <Route
+            exact
+            path={`${path}/education/create`}
             component={EducationUpsert}
           />
           <Route
             exact
-            path="/admin/education/edit/:editId"
+            path={`${path}/education/edit/:editId`}
             component={EducationUpsert}
           />
-          <Route exact path="/admin/industry" component={Industry} />
+          <Route exact path={`${path}/industry`} component={Industry} />
           <Route
             exact
-            path="/admin/industry/create"
+            path={`${path}/industry/create`}
             component={IndustryUpsert}
           />
           <Route
             exact
-            path="/admin/industry/edit/:editId"
+            path={`${path}/industry/edit/:editId`}
             component={IndustryUpsert}
           />
-          <Route exact path="/admin/faq" component={Faq} />
-          <Route exact path="/admin/faq/create" component={FaqUpsert} />
-          <Route exact path="/admin/faq/edit/:editId" component={FaqUpsert} />
-          <Route exact path="/admin/location" component={Location} />
+          <Route exact path={`${path}/faq`} component={Faq} />
+          <Route exact path={`${path}/faq/create`} component={FaqUpsert} />
           <Route
             exact
-            path="/admin/location/create"
+            path={`${path}/faq/edit/:editId`}
+            component={FaqUpsert}
+          />
+          <Route exact path={`${path}/location`} component={Location} />
+          <Route
+            exact
+            path={`${path}/location/create`}
             component={LocationUpsert}
           />
           <Route
             exact
-            path="/admin/location/edit/:editId"
+            path={`${path}/location/edit/:editId`}
             component={LocationUpsert}
           />
-          <Route exact path="/admin/job" component={Job} />
-          <Route exact path="/admin/job/create" component={JobUpsert} />
-          <Route exact path="/admin/job/edit/:editId" component={JobUpsert} />
-          <Route exact path="/admin/job/view/:viewId" component={JobView} />
-          <Route exact path="/admin/service" component={Service} />
-          <Route exact path="/admin/service/create" component={ServiceUpsert} />
+          <Route exact path={`${path}/job`} component={Job} />
+          <Route exact path={`${path}/job/create`} component={JobUpsert} />
           <Route
             exact
-            path="/admin/service/edit/:editId"
+            path={`${path}/job/edit/:editId`}
+            component={JobUpsert}
+          />
+          <Route exact path={`${path}/job/view/:viewId`} component={JobView} />
+          <Route exact path={`${path}/service`} component={Service} />
+          <Route
+            exact
+            path={`${path}/service/create`}
             component={ServiceUpsert}
           />
-          <Route exact path="/admin/partner" component={Partner} />
-          <Route exact path="/admin/partner/create" component={PartnerUpsert} />
           <Route
             exact
-            path="/admin/partner/edit/:editId"
+            path={`${path}/service/edit/:editId`}
+            component={ServiceUpsert}
+          />
+          <Route exact path={`${path}/partner`} component={Partner} />
+          <Route
+            exact
+            path={`${path}/partner/create`}
             component={PartnerUpsert}
           />
-          <Route path="*" component={PageError} />
-        </>{" "}
+          <Route
+            exact
+            path={`${path}/partner/edit/:editId`}
+            component={PartnerUpsert}
+          />
+        </>
       </Dashboard>
     </>
   );

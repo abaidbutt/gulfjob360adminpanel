@@ -16,22 +16,13 @@ function App() {
       <>
         <Switch>
           <Route exact path={["/", "/admin/login"]}>
-            {ctxUser ? (
-              <Redirect
-                to={{
-                  pathname: "/admin",
-                  state: { from: location },
-                }}
-              />
-            ) : (
-              <Login />
-            )}
+            {ctxUser ? <Redirect to={"/admin"} /> : <Login />}
           </Route>
           <PrivateRoute path="/admin">
             <Routes />
           </PrivateRoute>
 
-          <Route path="/*" component={PageError} />
+          {/* <Route component={PageError} /> */}
         </Switch>
       </>
     </>
