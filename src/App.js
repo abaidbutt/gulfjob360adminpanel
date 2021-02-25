@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch, useLocation } from "react-router-dom";
 import Routes from "./routes/Index";
 
 import Login from "./pages/Login";
@@ -9,42 +9,30 @@ import { AnimatedSwitch, AnimatedRoute } from "react-router-transition";
 import { AdminContext } from "./context/AdminContext";
 function App() {
   const { ctxUser } = useContext(AdminContext);
+  const location = useLocation();
 
   return (
     <>
       <>
-        <AnimatedSwitch
-          atEnter={{ opacity: 0 }}
-          atLeave={{ opacity: 0 }}
-          atActive={{ opacity: 1 }}
-        >
-          <AnimatedRoute
-            atEnter={{ offset: -100 }}
-            atLeave={{ offset: -100 }}
-            atActive={{ offset: 0 }}
-            mapStyles={(styles) => ({
-              // transform: `translateX(${styles.offset}%)`,
-            })}
-            exact
-            path={["/", "/admin/login"]}
-          >
-            {ctxUser ? <Redirect to="/admin" /> : <Login />}
-          </AnimatedRoute>
+        <Switch>
+          <Route exact path={["/", "/admin/login"]}>
+            {ctxUser ? (
+              <Redirect
+                to={{
+                  pathname: "/admin",
+                  state: { from: location },
+                }}
+              />
+            ) : (
+              <Login />
+            )}
+          </Route>
           <PrivateRoute path="/admin">
             <Routes />
           </PrivateRoute>
 
-          <AnimatedRoute
-            atEnter={{ offset: -100 }}
-            atLeave={{ offset: -100 }}
-            atActive={{ offset: 0 }}
-            mapStyles={(styles) => ({
-              transform: `translateX(${styles.offset}%)`,
-            })}
-            path="*"
-            component={PageError}
-          />
-        </AnimatedSwitch>
+          <Route path="*" component={PageError} />
+        </Switch>
       </>
     </>
   );

@@ -9,13 +9,6 @@ export const AdminContext = createContext();
 const AdminProvider = ({ children }) => {
   const [state, dispatch] = useReducer(adminReducer, initState);
 
-  useEffect(() => {
-    if (state.error) {
-      toast.error("Something went wrong");
-    }
-    return () => dispatch({ type: "ERROR", payload: "" });
-  }, [state]);
-
   async function handleFetch(routeName, rsl, rej) {
     try {
       const response = await Axios.get(routeName);

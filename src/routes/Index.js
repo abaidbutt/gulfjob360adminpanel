@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { spring, AnimatedSwitch } from "react-router-transition";
 import Chart from "../components/Chart";
 
@@ -30,17 +30,12 @@ import LocationUpsert from "../components/Location/LocationUpsert";
 import JobUpsert from "../components/Job/JobUpsert";
 import ServiceUpsert from "../components/Service/ServiceUpsert";
 import PartnerUpsert from "../components/Partner/PartnerUpsert";
-import JobView from '../components/Job/JobView'
+import JobView from "../components/Job/JobView";
 const Index = (props) => {
   return (
     <>
       <Dashboard {...props}>
-        <AnimatedSwitch
-          atEnter={bounceTransition.atEnter}
-          atLeave={bounceTransition.atLeave}
-          atActive={bounceTransition.atActive}
-          mapStyles={mapStyles}
-        >
+        <>
           <Route exact path="/admin" component={Chart} />
           <Route exact path="/admin/user" component={Orders} />
           <Route exact path="/admin/ads" component={Ads} />
@@ -115,7 +110,7 @@ const Index = (props) => {
             component={PartnerUpsert}
           />
           <Route path="*" component={PageError} />
-        </AnimatedSwitch>{" "}
+        </>{" "}
       </Dashboard>
     </>
   );

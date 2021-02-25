@@ -13,7 +13,7 @@ const AdsTable = ({ row, index, crtPage }) => {
         {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.location}</TableCell>
-      <TableCell>{htmr(row?.content)}</TableCell>
+      <TableCell>{row?.content ? htmr(row?.content) : ""}</TableCell>
       <TableCell>{row.status === 0 ? "In-Active" : "Active"}</TableCell>
       <TableCell align="center">
         <Moment
