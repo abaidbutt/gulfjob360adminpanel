@@ -31,7 +31,7 @@ function App() {
             <Routes />
           </PrivateRoute>
 
-          <Route path="*" component={PageError} />
+          <Route path="/*" component={PageError} />
         </Switch>
       </>
     </>
