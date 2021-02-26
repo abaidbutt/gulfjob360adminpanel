@@ -18,17 +18,18 @@ import { AdminContext } from "../../context/AdminContext";
 export default function TipUpsert() {
   const classes = useStyles();
   const history = useHistory();
-  const [errMsg, setErrMsg]=useState(null)
+  const [errMsg, setErrMsg] = useState(null);
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
   const [category, setCategory] = useState();
   const [values, setValues] = useState({
     heading: "",
-    description: "",
+
     slug: "",
     category_id: "",
   });
+  const [description, setDescription] = useState("");
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -59,13 +60,14 @@ export default function TipUpsert() {
           const { heading, description, slug, category_id } = res;
           const formData = {
             heading,
-            description,
+
             slug,
             category_id,
           };
           console.log(res, "kj");
 
           setValues(formData);
+          setDescription(description);
         })
         .catch((err) => {
           console.log(err);
@@ -86,6 +88,7 @@ export default function TipUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
+    values.description = description;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/faqs/${editId}`, values, rsl, rej);
@@ -95,20 +98,20 @@ export default function TipUpsert() {
     })
       .then((res) => history.push("/admin/faq"))
       .catch((err) => {
-        setErrMsg(err)
-        console.log(err)
+        setErrMsg(err);
+        console.log(err);
       });
   };
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, description: data });
+    setDescription(data);
   };
 
   return (
     <>
       <Container component="main" maxWidth="md" className={classes.root}>
         <div className={classes.paper}>
-          <Title>{editId?'Edit':'Add'} FAQ </Title>
+          <Title>{editId ? "Edit" : "Add"} FAQ </Title>
           <form className={classes.form} onSubmit={handleSubmit(EditSubmit)}>
             <TextField
               type="text"
@@ -134,9 +137,9 @@ export default function TipUpsert() {
             {errMsg?.heading.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-               <CKEditor
+            <CKEditor
               editor={ClassicEditor}
-              data={values.description}
+              data={description}
               onChange={handleContent}
             />
             {/* <TextField
@@ -183,41 +186,42 @@ export default function TipUpsert() {
             {errMsg?.slug.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-            
-              <TextField
-                label="Faq Category"
-                margin="dense"
-                select
-                variant="outlined"
-                inputProps={{
-                  inputRef: (ref) => {
-                    if (!ref) return;
-                    register({
-                      name: "category_id",
-                      value: ref.value,
-                    });
-                  },
-                  onChange: (e) => {
-                    const { category_id } = values;
 
-                    setValues({
-                      ...values,
-                      category_id: e.target.value,
-                    });
-                  },
-                }}
-                value={values.category_id}
-                fullWidth
-                error={errors.category_id ? true : false}
-              >
-                {/* <MenuItem></MenuItem> */}
-                {category && category.map((ctg, i) => (
+            <TextField
+              label="Faq Category"
+              margin="dense"
+              select
+              variant="outlined"
+              inputProps={{
+                inputRef: (ref) => {
+                  if (!ref) return;
+                  register({
+                    name: "category_id",
+                    value: ref.value,
+                  });
+                },
+                onChange: (e) => {
+                  const { category_id } = values;
+
+                  setValues({
+                    ...values,
+                    category_id: e.target.value,
+                  });
+                },
+              }}
+              value={values.category_id}
+              fullWidth
+              error={errors.category_id ? true : false}
+            >
+              {/* <MenuItem></MenuItem> */}
+              {category &&
+                category.map((ctg, i) => (
                   <MenuItem value={ctg.id} key={i}>
                     {ctg.name}
                   </MenuItem>
                 ))}
-              </TextField>
-          
+            </TextField>
+
             <div className={classes.wrapper}>
               <Button
                 type="submit"

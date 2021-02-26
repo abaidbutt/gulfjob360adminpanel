@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import IndustryDel from "./IndustryDel";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 const IndustryTable = ({ row, index, crtPage }) => {
   return (
     <TableRow key={row.id}>
@@ -31,6 +31,8 @@ const IndustryTable = ({ row, index, crtPage }) => {
 
 export default IndustryTable;
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {
@@ -57,7 +59,7 @@ function SimpleListMenu({ rowId }) {
           <IndustryDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/industry/edit/${rowId}`}>
+          <Link to={`/${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>

@@ -4,8 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import AdsDel from "./AdsDel";
 import htmr from "htmr";
-
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 const AdsTable = ({ row, index, crtPage }) => {
   return (
     <TableRow key={row.id}>
@@ -32,6 +31,7 @@ const AdsTable = ({ row, index, crtPage }) => {
 
 export default AdsTable;
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {
@@ -58,7 +58,7 @@ function SimpleListMenu({ rowId }) {
           <AdsDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/ads/edit/${rowId}`}>
+          <Link to={`${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>

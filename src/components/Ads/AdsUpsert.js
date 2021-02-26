@@ -26,11 +26,8 @@ export default function AdsUpsert() {
 
   const history = useHistory();
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
-  const [values, setValues] = useState({
-    location: "",
-    content: "",
-    status: "",
-  });
+  const [values, setValues] = useState({ location: "", status: "" });
+  const [content, setContent] = useState("");
 
   const handleChange = useCallback(
     (e) => {
@@ -60,13 +57,9 @@ export default function AdsUpsert() {
         .then((res) => {
           const { location, content, status } = res;
 
-          const formData = {
-            location: location,
-            content: "" || content || "",
-            status: status,
-          };
-          console.log(formData, res);
+          const formData = { location, status };
           setValues(formData);
+          setContent(content);
         })
         .catch((err) => {
           console.log(err);
@@ -76,6 +69,7 @@ export default function AdsUpsert() {
 
   const EditSubmit = async (data) => {
     console.log(data);
+    values.content = content;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/advertisements/${editId}`, values, rsl, rej);
@@ -95,7 +89,7 @@ export default function AdsUpsert() {
 
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, content: data });
+    setContent(data);
   };
   return (
     <>
@@ -122,7 +116,7 @@ export default function AdsUpsert() {
 
             <CKEditor
               editor={ClassicEditor}
-              data={values.content}
+              data={content}
               onChange={handleContent}
             />
 

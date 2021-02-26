@@ -24,14 +24,16 @@ export default function TipUpsert() {
   );
   const [errMsg, setErrMsg] = useState(null);
   const [category, setCategory] = useState();
+
   const [values, setValues] = useState({
     title: "",
-    description: "",
+
     price: "",
     slug: "",
     status: "",
     category_id: "",
   });
+  const [description, setDescription] = useState("");
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -61,12 +63,13 @@ export default function TipUpsert() {
           const { title, description, price, status, slug, category_id } = res;
           const formData = {
             title,
-            description,
+
             price,
             status,
             slug,
             category_id,
           };
+          setDescription(description);
 
           setValues(formData);
         })
@@ -88,6 +91,7 @@ export default function TipUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
+    values.description = description;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/services/${editId}`, values, rsl, rej);
@@ -102,7 +106,7 @@ export default function TipUpsert() {
   };
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, description: data });
+    setDescription(data);
   };
   return (
     <>
@@ -136,7 +140,7 @@ export default function TipUpsert() {
             ))}
             <CKEditor
               editor={ClassicEditor}
-              data={values.description}
+              data={description}
               onChange={handleContent}
             />
             {/* 

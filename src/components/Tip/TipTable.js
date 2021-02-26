@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import TipDel from "./TipDel";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 export default function TipTable({ row, index, crtPage }) {
   return (
     <TableRow key={row.id}>
@@ -31,6 +31,8 @@ export default function TipTable({ row, index, crtPage }) {
 }
 
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {
@@ -57,7 +59,7 @@ function SimpleListMenu({ rowId }) {
           <TipDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/tip/edit/${rowId}`}>
+          <Link to={`${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>

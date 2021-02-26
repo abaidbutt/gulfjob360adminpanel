@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import CategoryDel from "./CategoryDel";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 const CategoryTable = ({ row, index, crtPage }) => {
   return (
     <TableRow key={row.id}>
@@ -30,6 +30,8 @@ const CategoryTable = ({ row, index, crtPage }) => {
 
 export default CategoryTable;
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {
@@ -56,7 +58,7 @@ function SimpleListMenu({ rowId }) {
           <CategoryDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/category/edit/${rowId}`}>
+          <Link to={`${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>

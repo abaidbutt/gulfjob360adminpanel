@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit, Pageview } from "@material-ui/icons";
 import JobDel from "./JobDel";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 export default function JobTable({ row, index, crtPage }) {
   return (
     <TableRow key={row.id}>
@@ -33,6 +33,8 @@ export default function JobTable({ row, index, crtPage }) {
 }
 
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {
@@ -59,14 +61,14 @@ function SimpleListMenu({ rowId }) {
           <JobDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/job/edit/${rowId}`}>
+          <Link to={`${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>
           </Link>
         </MenuItem>
         <MenuItem>
-          <Link to={`/admin/job/view/${rowId}`}>
+          <Link to={`${url}/view/${rowId}`}>
             <Button color="primary" fullWidth>
               <Pageview />
             </Button>

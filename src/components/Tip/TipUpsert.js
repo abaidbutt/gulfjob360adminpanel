@@ -18,17 +18,18 @@ import { AdminContext } from "../../context/AdminContext";
 export default function TipUpsert() {
   const classes = useStyles();
   const history = useHistory();
-  const [errMsg, setErrMsg]=useState(null)
+  const [errMsg, setErrMsg] = useState(null);
   const { handleEdit, handleGet, handleCreate, handleCategory } = useContext(
     AdminContext
   );
   const [category, setCategory] = useState();
   const [values, setValues] = useState({
     heading: "",
-    description: "",
+
     slug: "",
     category_id: "",
   });
+  const [description, setDescription] = useState("");
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -59,10 +60,10 @@ export default function TipUpsert() {
           const { heading, description, slug, category_id } = res;
           const formData = {
             heading,
-            description,
             slug,
             category_id,
           };
+          setDescription(description);
 
           setValues(formData);
         })
@@ -85,6 +86,7 @@ export default function TipUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
+    values.description = description;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/tips/${editId}`, values, rsl, rej);
@@ -94,13 +96,13 @@ export default function TipUpsert() {
     })
       .then((res) => history.push("/admin/tip"))
       .catch((err) => {
-        setErrMsg(err)
-        console.log(err)
+        setErrMsg(err);
+        console.log(err);
       });
   };
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, description: data });
+    setDescription(data);
   };
   return (
     <>
@@ -132,9 +134,9 @@ export default function TipUpsert() {
             {errMsg?.heading.map((err) => (
               <FormHelperText error> {err}</FormHelperText>
             ))}
-             <CKEditor
+            <CKEditor
               editor={ClassicEditor}
-              data={values.description}
+              data={description}
               onChange={handleContent}
             />
             {/* <TextField

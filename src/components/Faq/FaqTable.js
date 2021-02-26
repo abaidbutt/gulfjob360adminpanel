@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import FaqDel from "./FaqDel";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 export default function FaqTable({ row, index, crtPage }) {
   return (
     <TableRow key={row.id}>
@@ -31,6 +31,8 @@ export default function FaqTable({ row, index, crtPage }) {
 }
 
 function SimpleListMenu({ rowId }) {
+  const { url } = useRouteMatch();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClickListItem = (event) => {

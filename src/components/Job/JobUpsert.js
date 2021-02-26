@@ -63,7 +63,7 @@ export default function JobUpsert() {
   const [categories, setCategories] = useState();
   const [values, setValues] = useState({
     title: "",
-    description: "",
+
     job_location: "",
     currency: "$",
     min_salry: "",
@@ -82,6 +82,7 @@ export default function JobUpsert() {
     job_faq: "",
     company_id: "",
   });
+  const [description, setDescription] = useState("");
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -144,7 +145,7 @@ export default function JobUpsert() {
           console.log(res, editId);
           const {
             title,
-            description,
+
             job_location,
             currency,
             min_salry,
@@ -186,6 +187,7 @@ export default function JobUpsert() {
           };
 
           setValues(formData);
+          setDescription(description);
         })
         .catch((err) => {
           console.log(err);
@@ -206,6 +208,7 @@ export default function JobUpsert() {
   }, []);
 
   const EditSubmit = async (data) => {
+    values.description = description;
     new Promise((rsl, rej) => {
       if (editId) {
         handleEdit(`${BaseUrl}/jobs/${editId}`, values, rsl, rej);
@@ -221,7 +224,7 @@ export default function JobUpsert() {
   };
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, description: data });
+    setDescription(data);
   };
   return (
     <>
@@ -251,7 +254,7 @@ export default function JobUpsert() {
               <Grid item xs={12}>
                 <CKEditor
                   editor={ClassicEditor}
-                  data={values.description}
+                  data={description}
                   onChange={handleContent}
                 />
                 {/* <TextField

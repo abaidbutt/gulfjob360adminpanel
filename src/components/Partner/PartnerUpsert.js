@@ -21,9 +21,10 @@ export default function AdsUpsert() {
   const { handleEdit, handleGet, handleCreate } = useContext(AdminContext);
   const [values, setValues] = useState({
     name: "",
-    description: "",
+
     image: [],
   });
+  const [description, setDescription] = useState("");
   const handleChange = useCallback(
     (e) => {
       const { name, value } = e.target;
@@ -53,9 +54,10 @@ export default function AdsUpsert() {
           const { name, description, image } = res;
           const formData = {
             name,
-            description,
+
             image,
           };
+          setDescription(description);
 
           setValues(formData);
         })
@@ -68,7 +70,7 @@ export default function AdsUpsert() {
   const EditSubmit = async (data) => {
     const formData = new FormData();
     formData.append("name", values.name);
-    formData.append("description", values.description);
+    formData.append("description", description);
     values.image = data.image[0];
     formData.append("image", values.image);
 
@@ -86,7 +88,7 @@ export default function AdsUpsert() {
   };
   const handleContent = (e, editor) => {
     const data = editor.getData();
-    setValues({ ...values, description: data });
+    setDescription( data );
   };
   return (
     <>
@@ -118,7 +120,7 @@ export default function AdsUpsert() {
             ))}
             <CKEditor
               editor={ClassicEditor}
-              data={values.description}
+              data={description}
               onChange={handleContent}
             />
 
@@ -140,7 +142,7 @@ export default function AdsUpsert() {
               })}
               error={errors.description ? true : false}
             /> */}
-            <div style={{marginTop:'10px'}}>
+            <div style={{ marginTop: "10px" }}>
               <input
                 accept="image/*"
                 style={{ display: "none" }}
