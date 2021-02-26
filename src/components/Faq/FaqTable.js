@@ -1,22 +1,23 @@
-import React , {useState}from "react";
+import React, { useState } from "react";
 import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
 import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import FaqDel from "./FaqDel";
+import htmr from "htmr";
 
 import { Link, useRouteMatch } from "react-router-dom";
 export default function FaqTable({ row, index, crtPage }) {
   return (
     <TableRow key={row.id}>
       <TableCell component="th" scope="row">
-      {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
+        {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.heading}</TableCell>
-      <TableCell>{row.description}</TableCell>
+      <TableCell>{row.description ? htmr(row.description) : ""}</TableCell>
       <TableCell>{row.status === 0 ? "In-Active" : "Active"}</TableCell>
       <TableCell>{row.category_id}</TableCell>
       <TableCell align="center">
-      <Moment
+        <Moment
           date={row.created_at.split(".")[0]}
           from={new Date().toJSON().split(".")[0]}
           ago

@@ -11,6 +11,7 @@ import {
   Box,
   CircularProgress,
 } from "@material-ui/core";
+import htmr from "htmr";
 
 import Title from "../Title";
 import { useParams } from "react-router-dom";
@@ -86,7 +87,7 @@ export default function JobView() {
                 </TableRow>
                 <TableRow>
                   <StyledTableCell>Description</StyledTableCell>
-                  <TableCell>{viewData?.description}</TableCell>
+                  <TableCell>{htmr(viewData?.description)}</TableCell>
                 </TableRow>
                 <TableRow>
                   <StyledTableCell>Other Benefits</StyledTableCell>

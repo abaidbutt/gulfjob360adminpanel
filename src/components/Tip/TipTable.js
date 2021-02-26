@@ -3,6 +3,7 @@ import { TableCell, TableRow, Button, Menu, MenuItem } from "@material-ui/core";
 import Moment from "react-moment";
 import { MoreVert, Edit } from "@material-ui/icons";
 import TipDel from "./TipDel";
+import htmr from "htmr";
 
 import { Link, useRouteMatch } from "react-router-dom";
 export default function TipTable({ row, index, crtPage }) {
@@ -12,7 +13,7 @@ export default function TipTable({ row, index, crtPage }) {
         {index + 1 + (crtPage > 1 ? crtPage * 10 - 10 : 0)}
       </TableCell>
       <TableCell>{row.heading}</TableCell>
-      <TableCell>{row.description}</TableCell>
+      <TableCell>{htmr(row.description)}</TableCell>
       <TableCell>{row.status === 0 ? "In-Active" : "Active"}</TableCell>
       <TableCell>{row.category_id}</TableCell>
       <TableCell align="center">

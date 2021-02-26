@@ -59,7 +59,7 @@ function SimpleListMenu({ rowId }) {
           <IndustryDel delId={rowId} />
         </MenuItem>
         <MenuItem>
-          <Link to={`/${url}/edit/${rowId}`}>
+          <Link to={`${url}/edit/${rowId}`}>
             <Button color="primary" fullWidth>
               <Edit />
             </Button>
